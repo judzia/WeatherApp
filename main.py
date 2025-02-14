@@ -4,6 +4,7 @@ import requests
 from dotenv import load_dotenv
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QFontDatabase, QFont
 
 load_dotenv()  
 
@@ -44,13 +45,21 @@ class WeatherApp(QWidget):
         self.emoji_label.setObjectName("emoji_label")
         self.description_label.setObjectName("description_label")
 
+        font_id = QFontDatabase.addApplicationFont("PixelifySans.ttf")
+        font_family = QFontDatabase.applicationFontFamilies(font_id)[0]
+        my_font = QFont(font_family)
+        self.city_label.setFont(my_font)
+        self.get_weather_button.setFont(my_font)
+        self.temperature_label.setFont(my_font)        
+        self.description_label.setFont(my_font)
+
         self.setStyleSheet("""
             QLabel, QPushButton {
-                font-family: 'Arial';
+                
                 }
                 QLabel#city_label{
                     font-size: 40px;
-                    font-style: italic;                    
+                                       
                 }
                 QLineEdit#city_input{
                     font-size: 30px;
@@ -58,7 +67,6 @@ class WeatherApp(QWidget):
                 }
                 QPushButton#get_weather_button{
                     font-size: 30px;
-                    font-weight: bold;
                     padding: 5px;
                 }
                 QLabel#temperature_label{
