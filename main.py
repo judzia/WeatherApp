@@ -3,14 +3,16 @@ import sys
 import requests
 from dotenv import load_dotenv
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QFontDatabase, QFont
+from PyQt5.QtGui import QPixmap, QPalette, QBrush, QMovie
 
 load_dotenv()  
 
 class WeatherApp(QWidget):
     def __init__(self):
         super().__init__()
+        self.setFixedSize(400, 500)
         self.city_label = QLabel("City: ", self)
         self.city_input = QLineEdit(self)
         self.get_weather_button = QPushButton("Get Weather", self)
@@ -18,6 +20,11 @@ class WeatherApp(QWidget):
         self.emoji_label = QLabel(self) 
         self.description_label = QLabel(self)
         self.initUI()
+
+        pallete = QPalette()
+        pixmap = QPixmap("images/background1.png")
+        pallete.setBrush(QPalette.Background, QBrush(pixmap))
+        self.setPalette(pallete)
 
     def initUI(self):
         self.setWindowTitle("Weather App")
@@ -73,13 +80,12 @@ class WeatherApp(QWidget):
                     font-size: 70px;
                 }
                 QLabel#emoji_label{
-                    font-size: 90px;
-                    font-family: 'Segoe UI Emoji';
+                    font-size: 30px;
                    
                 }
                 QLabel#description_label{
                     font-size: 40px;
-                    
+                    color: white;
                 }
             """)
 
@@ -144,40 +150,46 @@ class WeatherApp(QWidget):
         weather_description = weather_data["weather"][0]["description"]
 
         
+        
         self.temperature_label.setText(f"{temperature_c:.1f}°C")
-        self.emoji_label.setText(self.get_weather_picture(weather_id))
         self.description_label.setText(weather_description)
+
+        movie = QMovie(self.get_weather_picture(weather_id))
+        movie.setScaledSize(QSize(200, 200))
+        self.emoji_label.setMovie(movie)
+        movie.start()
+
 
     @staticmethod
     def get_weather_picture(weather_id):
         if 200 <= weather_id <= 232:
-            return "⛈️"
+            return "images/thunderstorm.gif"
         elif 300 <= weather_id <= 321:
-            return "🌧️"
+            return "images/drizzle.gif"
         elif 500 <= weather_id <= 531:
-            return "🌧️"
+            return "images/rain.gif"
         elif 600 <= weather_id <= 622:
-            return "❄️"
+            return "images/snow.gif"
         elif 701 <= weather_id <= 741:
-            return "🌫️"
+            return "images/mist.gif"
         elif weather_id == 762:
-            return "🌋"
+            return "images/volcano.gif"
         elif weather_id == 771:
-            return "💨"
+            return "images/squall.gif"
         elif weather_id == 781:
-            return "🌪️"
+            return "images/tornado.gif"
         elif weather_id == 800:
-            return "☀️"
+            return "images/clear.gif"
         elif weather_id == 801:
-            return "🌤️"
+            return "images/cloud2.gif"
         elif weather_id == 802:
-            return "⛅"
+            return "images/cloud3.gif"
         elif weather_id == 803:
-            return "🌥️"
+            return "images/cloud2.gif"
         elif weather_id == 804:
-            return "☁️"
+            return "images/cloud1.gif"
         else:
-            return "❓"
+            return "images/unknown.gif"
 
 
 if __name__ == "__main__":
