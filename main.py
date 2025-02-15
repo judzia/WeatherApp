@@ -4,7 +4,7 @@ import requests
 from dotenv import load_dotenv
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout
 from PyQt5.QtCore import Qt, QSize
-from PyQt5.QtGui import QFontDatabase, QFont
+from PyQt5.QtGui import QFontDatabase, QFont, QIcon
 from PyQt5.QtGui import QPixmap, QPalette, QBrush, QMovie
 
 load_dotenv()  
@@ -18,6 +18,7 @@ class WeatherApp(QWidget):
         self.temperature_label = QLabel(self)
         self.emoji_label = QLabel(self) 
         self.description_label = QLabel(self)
+        self.setWindowIcon(QIcon("images/icon.png"))
         self.initUI()
 
         pallete = QPalette()
