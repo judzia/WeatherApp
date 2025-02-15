@@ -8,7 +8,6 @@ from PyQt5.QtGui import QFontDatabase, QFont
 from PyQt5.QtGui import QPixmap, QPalette, QBrush, QMovie
 
 load_dotenv()  
-
 class WeatherApp(QWidget):
     def __init__(self):
         super().__init__()
@@ -51,11 +50,14 @@ class WeatherApp(QWidget):
         self.temperature_label.setObjectName("temperature_label")
         self.emoji_label.setObjectName("emoji_label")
         self.description_label.setObjectName("description_label")
+        self.city_input.setContentsMargins(10, 0, 10, 0)
+
 
         font_id = QFontDatabase.addApplicationFont("PixelifySans.ttf")
         font_family = QFontDatabase.applicationFontFamilies(font_id)[0]
         my_font = QFont(font_family)
         self.city_label.setFont(my_font)
+        self.city_input.setFont(my_font)
         self.get_weather_button.setFont(my_font)
         self.temperature_label.setFont(my_font)        
         self.description_label.setFont(my_font)
@@ -66,18 +68,24 @@ class WeatherApp(QWidget):
                 }
                 QLabel#city_label{
                     font-size: 40px;
-                                       
+                    color: #30274f;   
                 }
                 QLineEdit#city_input{
                     font-size: 30px;
                     padding: 5px;
+                    background-color: #d6dfed;
                 }
                 QPushButton#get_weather_button{
                     font-size: 30px;
                     padding: 5px;
+                    background-color: #30274f;
+                    color: #d6dfed;
+                    border-radius: 15px;
+                    
                 }
                 QLabel#temperature_label{
                     font-size: 70px;
+                    color: #583b59;
                 }
                 QLabel#emoji_label{
                     font-size: 30px;
@@ -85,7 +93,7 @@ class WeatherApp(QWidget):
                 }
                 QLabel#description_label{
                     font-size: 40px;
-                    color: white;
+                    color: #d6dfed;
                 }
             """)
 
@@ -108,35 +116,35 @@ class WeatherApp(QWidget):
         except requests.exceptions.HTTPError as http_error:
             match response.status_code:
                 case 400:
-                    self.display_error("Bad request\nPlease check your city name")
+                    self.display_error("Bad request!\nPlease check your city name")
                 case 401:
-                    self.display_error("Unauthorized\nInvalid API key")
+                    self.display_error("Unauthorized!\nInvalid API key")
                 case 403:
-                    self.display_error("Forbidden\nAccess denied")
+                    self.display_error("Forbidden!\nAccess denied")
                 case 404:
-                    self.display_error("Not found\nCity not found")
+                    self.display_error("Not found!\nCity not found")
                 case 500:
-                    self.display_error("Internal server error\nPlease try again later")
+                    self.display_error("Internal server error!\nPlease try again later")
                 case 502:
-                    self.display_error("Bad Gateway\nInvalid response from the server")
+                    self.display_error("Bad Gateway!\nInvalid response from\nthe server")
                 case 503:
-                    self.display_error("Service Unavailable\nServer is temporarily unavailable")
+                    self.display_error("Service Unavailable!\nServer is temporarily\nunavailable")
                 case 504:
-                    self.display_error("Gateway Timeout\nServer is taking too long to respond")
+                    self.display_error("Gateway Timeout!\nServer is taking too\nlong to respond")
                 case _:
-                    self.display_error(f"HTTP Error\n{http_error}")
+                    self.display_error(f"HTTP Error:\n{http_error}")
 
         except requests.exceptions.ConnectionError:
-            self.display_error("Connection Error\nPlease check your internet connection")
+            self.display_error("Connection Error!\nPlease check your\ninternet connection")
         except requests.exceptions.Timeout:
-            self.display_error("Timeout Error\nRequest timed out")
+            self.display_error("Timeout Error!\nRequest timed out")
         except requests.exceptions.TooManyRedirects:
-            self.display_error("Too Many Redirects\nThe URL is making too many redirects")
+            self.display_error("Too Many Redirects!\nThe URL is making too\nmany redirects")
         except requests.exceptions.RequestException as request_exception:
             self.display_error(f"Request Exception:\n{request_exception}")
 
     def display_error(self, message):
-        self.temperature_label.setStyleSheet("font-size: 30px; color: red;")
+        self.temperature_label.setStyleSheet("font-size: 25px; color: #30274f;")
         self.temperature_label.setText(message)
         self.emoji_label.clear()
         self.description_label.clear()
