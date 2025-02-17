@@ -18,7 +18,7 @@ A simple PyQt5 Weather App that fetches real-time weather data from the OpenWeat
 1. Clone the repository:
 
 ```
-git clone https://github.com/your-username/weather-app.git
+git clone https://github.com/judzia/weather-app.git
 cd weather-app
 ```
 
